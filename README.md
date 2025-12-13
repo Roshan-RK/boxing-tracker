@@ -1,5 +1,7 @@
 # Boxing Training Performance Tracker
 
+Boxing Tracker is a small end-to-end data pipeline that tracks student technique quality over time, identifies weaknesses, and measures progress in boxing training sessions. It uses Python (pandas, gspread) with the Google Sheets API as the primary data store.
+
 ## 1. Problem
 In my boxing classes, students are of different ages and have different schedules: jobs, university exams, late work, health issues, and motivation swings. This means many of them miss sessions, fall behind, and need different drills than the students who attend consistently. In a single class, I often have to teach different things to different people, and it becomes hard to remember who needs to work on which technique and where each student is actually struggling. Students also usually feel they are doing the technique correctly, so they don’t always realize which areas need work unless I systematically track it.
 
@@ -41,6 +43,12 @@ Currently, the pipeline:
 
 ## 5. Project structure
 
+- `pipeline.py` – Main data pipeline and analysis script (reads from Google Sheets / CSV, validates, summarizes).
+- `CHANGELOG.md` – History of changes and features.
+- `DEBUG_LOG.md` – Bug and debugging log and notes.
+- `credentials.json` – Google Service Account credentials (should not be committed to a public repo).
+- `README.md` – Project description, usage, and design overview.
+
 
 
 ## 6. Future improvements
@@ -53,3 +61,8 @@ Planned next steps:
 - Experiment with simple models to flag students at risk of falling behind based on attendance and technique scores.
 - Add basic tests to ensure data validation and summary calculations keep working as the project grows.
 
+## Key design decisions
+
+- **5-level technique rubric (1–5):** 3 is the baseline acceptable performance, 1–2 indicate below-baseline execution, and 4–5 indicate above-baseline execution.
+- **Google Sheets as data store:** Easy to update from a phone in the gym, avoids the overhead of setting up and maintaining a database.
+- **Python pipeline:** Connects to Google Sheets via a service account, cleans the data, computes aggregated quality metrics per student and technique, and prepares the data for future ML use cases.
