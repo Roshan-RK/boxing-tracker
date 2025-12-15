@@ -21,6 +21,7 @@ Currently, the pipeline:
 - Groups and sorts students per technique based on their average quality score and number of sessions attended.
 - Shows improvement trends for each technique per student by comparing the earliest and most recent session scores.
 - Identifies each student's weakest techniques (lowest quality scores) so I know where to spend more coaching time.
+- Generates per-student technique charts to decide what to emphasize in upcoming sessions.
 
 ## 4. How to run
 

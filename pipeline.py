@@ -1,3 +1,12 @@
+"""
+Boxing Tracker Data Pipeline
+
+Reads training session data from Google Sheets, validates inputs,
+calculates quality scores per technique, and provides per-student analysis.
+
+Usage:
+    python pipeline.py
+"""
 import gspread
 import pandas as pd
 
