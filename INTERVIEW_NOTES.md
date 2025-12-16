@@ -34,6 +34,13 @@ An end-to-end data pipeline that tracks boxing students’ technique quality ove
 
 ---
 
+## Visualization script
+
+I built a visualization script that reads the same Google Sheets session data and generates per‑student bar charts of average technique scores. This lets me quickly see each student’s weakest techniques before class so I can plan drills that focus on exactly where they’re struggling.
+-  groupby("Technique")["Quality_Score"].mean()
+It groups all rows by Technique and then takes the average of Quality_Score within each technique group. The result is one mean value per technique, which becomes the bar height for that technique.
+
+
 ## Key design decisions
 
 - **5-level rubric (1–5):**  
@@ -65,3 +72,4 @@ An end-to-end data pipeline that tracks boxing students’ technique quality ove
 - Add visualizations (technique score trends per student, weakest techniques dashboard).
 - Automate pulling data from Google Sheets on a schedule instead of manual export.
 - Add simple models to flag students at risk of stagnation based on attendance and score trends.
+
