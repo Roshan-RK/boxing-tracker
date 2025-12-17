@@ -18,7 +18,6 @@ from google.oauth2.service_account import Credentials
 SERVICE_ACCOUNT_FILE = "credentials.json"   # path to your creds
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 SHEET_NAME = "Sessions"                     # tab with your session data
-STUDENT_NAME = "Shivani"                    # change to a real student
 OUTPUT_DIR = "charts"
 # -----------------------------
 
@@ -53,10 +52,28 @@ def main():
 
     df = get_sessions_df()
 
-    student_data = df[df["Student"] == STUDENT_NAME]
+    # Ask user which student to visualize
+    available_students = sorted(df["Student"].unique())
+    print("Available students:", ", ".join(available_students))
+
+    raw_input_name = input("Enter the student name to visualize: ").strip()
+    
+    # Build a case-insensitive lookup
+    lookup = {name.lower(): name for name in available_students}
+    key = raw_input_name.lower()
+
+    if key not in lookup:
+        raise ValueError(f"Student '{raw_input_name}' not found in data.")
+
+    student_name = lookup[key]  # this is the correctly-cased name from the datastudent_name = input("Enter the student name to visualize: ").strip()
+
+    if student_name not in available_students:
+        raise ValueError(f"Student '{student_name}' not found in data.")
+
+    student_data = df[df["Student"] == student_name]
 
     if student_data.empty:
-        raise ValueError(f"No rows found for student: {STUDENT_NAME}")
+        raise ValueError(f"No rows found for student: {student_name}")
 
     technique_scores = (
         student_data
@@ -68,7 +85,7 @@ def main():
     plt.figure(figsize=(10, 6))
     technique_scores.plot(kind="bar")
 
-    plt.title(f"Average Technique Scores - {STUDENT_NAME}")
+    plt.title(f"Average Technique Scores - {student_name}")
     plt.ylabel("Average Quality Score (1–5)")
     plt.xlabel("Technique")
     plt.ylim(0, 5)
@@ -80,7 +97,7 @@ def main():
     
     output_path = os.path.join(
         OUTPUT_DIR,
-        f"{STUDENT_NAME.lower()}_technique_scores.png"
+        f"{student_name.lower()}_technique_scores.png"
     )
     plt.savefig(output_path, dpi=150)
     plt.close()

@@ -104,5 +104,34 @@ During manual editing of the sheet, `"Technique"` was accidentally entered twice
 
 ---
 
+## ISSUE #3 – Missing Quality_Score values for new rows
 
+**Date**: 2025-12-17, ~08:30–08:40 IST  
+**Severity**: MEDIUM  
+**Status**: ✅ RESOLVED  
+
+### Symptom
+
+- `visualize.py` crashed with a TypeError when computing the mean Quality_Score per technique.
+- Error trace pointed to `groupby("Technique")["Quality_Score"].mean()`.
+
+### Root Cause
+
+- In the Google Sheet, the `Quality_Score` column used a formula, but the formula had not been filled down for newer session rows.
+- New entries had blank `Quality_Score` cells, which led to non-numeric / missing values in the DataFrame.
+
+### Solution Applied
+
+- Extended the `Quality_Score` formula down to cover all existing and future rows.
+- Confirmed all session rows now have a numeric `Quality_Score` before running the script.
+
+### Testing After Fix
+
+- [x] Reran `python visualize.py` for a student; bar chart generated without errors.
+
+### Additional Hardening
+
+- Made student name input in `visualize.py` case-insensitive.
+- The script now builds a lookup from lowercase student names to their canonical names in the data.
+- This prevents errors when I accidentally type `deep` instead of `Deep` and still generates the correct chart.
 
