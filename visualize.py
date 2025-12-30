@@ -57,23 +57,25 @@ def main():
     print("Available students:", ", ".join(available_students))
 
     raw_input_name = input("Enter the student name to visualize: ").strip()
-    
-    # Build a case-insensitive lookup
+
+    # Case-insensitive lookup
     lookup = {name.lower(): name for name in available_students}
     key = raw_input_name.lower()
 
     if key not in lookup:
         raise ValueError(f"Student '{raw_input_name}' not found in data.")
 
-    student_name = lookup[key]  # this is the correctly-cased name from the datastudent_name = input("Enter the student name to visualize: ").strip()
+    student_name = lookup[key]  # correctly-cased name from the data
 
-    if student_name not in available_students:
-        raise ValueError(f"Student '{student_name}' not found in data.")
+    student_data = df[df["Student"] == student_name].copy()
+    
+    # Keep only rows that have a numeric Quality_Score
+    student_data["Quality_Score"] = pd.to_numeric(student_data["Quality_Score"], errors="coerce")
+    student_data = student_data[student_data["Quality_Score"].notna()]
 
-    student_data = df[df["Student"] == student_name]
 
     if student_data.empty:
-        raise ValueError(f"No rows found for student: {student_name}")
+        raise ValueError(f"No technique scores available for student: {student_name}")
 
     technique_scores = (
         student_data
@@ -107,3 +109,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

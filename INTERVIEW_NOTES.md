@@ -73,3 +73,11 @@ It groups all rows by Technique and then takes the average of Quality_Score with
 - Automate pulling data from Google Sheets on a schedule instead of manual export.
 - Add simple models to flag students at risk of stagnation based on attendance and score trends.
 
+
+## Endurance dimension
+
+- After a few weeks of using the tracker, I realized my data only captured *technical* quality (jab, cross, stance), not how long students could sustain high‑intensity conditioning work.
+- I added a separate `Endurance` metric (0–5) for HIIT or mixed sessions, where 0 means “did not complete the circuit” and 5 means “exceptional pace and form with energy left for more work”.
+- On pure conditioning blocks I log rows like: Student = Aditiya, Date = 19/12/2025, Technique = `Endurance_Circuit`, `Quality_Score = NA`, `Endurance = 2` (finished but very fatigued, frequent pauses).
+- Separating technique quality from endurance makes the data more realistic and lets me see when a student’s technique is fine but conditioning is the bottleneck.
+

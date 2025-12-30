@@ -135,3 +135,28 @@ During manual editing of the sheet, `"Technique"` was accidentally entered twice
 - The script now builds a lookup from lowercase student names to their canonical names in the data.
 - This prevents errors when I accidentally type `deep` instead of `Deep` and still generates the correct chart.
 
+---
+
+### 2025-12-30 - Visualization crash for Aditiya
+
+**Context**:
+- Command: `python visualize.py`
+- Input: Selected student = "Aditiya"
+
+**Observed behavior**:
+- Script printed `Available students: Aditiya, Deep, Rihan, Shivani`.
+- After entering "Aditiya", script crashed with:
+  - `TypeError: Could not convert string '' to numeric`
+  - Followed by `TypeError: agg function failed [how->mean,dtype->object]`.
+
+**Root cause**:
+- `Student` column had previously contained a trailing space in one row (`"Aditiya "`), which was fixed manually in the sheet.
+- `visualize.py` was:
+  - Asking for the student name twice (broken input line).
+  - Grouping by `Technique` and calling `.mean()` on `Quality_Score` without cleaning the column.
+- Some rows (e.g. `Endurance_Circuit`) had blank `Quality_Score`, so the `Quality_Score` column was `object` dtype with empty strings, causing `.mean()` to fail.
+
+**Fix**:
+- Cleaned the `Student` values in the sheet so all "Aditiya" rows are identical (no trailing spaces).
+- Updated `visualize.py` to:
+  - Use a single, case-insensitive lookup for the selected student

@@ -11,6 +11,40 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+### 2025-12-30 - 22:45 IST
+**Type**: BUGFIX  
+**Description**: Fixed visualization script crashes caused by inconsistent student names and non-numeric Quality_Score values.  
+**Details**:
+- Cleaned up trailing spaces in the `Student` column in the `Sessions` sheet so each student appears exactly once (e.g. no duplicate `"Aditiya"` vs `"Aditiya "`).
+- Updated `visualize.py` to:
+  - Use a case-insensitive lookup for student names so minor input casing differences do not cause errors.
+  - Filter to rows with a numeric `Quality_Score` before grouping and taking the mean, so conditioning-only rows (with blank Quality_Score) are safely ignored in technique charts.
+- Verified that `python visualize.py` runs successfully for all current students and saves per-student technique score charts without errors.
+
+**Files Modified**:
+- Google Sheet `"Boxing Tracker"` → `Sessions` tab  
+- `visualize.py`  
+
+**Status**: COMPLETED
+
+---
+
+### 2025-12-30 - 20:30 IST
+**Type**: FEATURE  
+**Description**: Added an Endurance metric and support for conditioning / HIIT sessions.  
+**Details**:
+- Added an `Endurance` (0–5) column to the `Sessions` sheet to track performance in conditioning circuits.
+- Defined a 0–5 endurance rubric (0 = did not complete the circuit, 5 = exceptional pace and form with energy left).
+- Started logging conditioning blocks using `Technique = "Endurance_Circuit"` with technique sub-scores left blank and only `Endurance` filled (e.g. Aditiya on 19/12/2025 with Endurance = 2).
+
+**Files Modified**:
+- Google Sheet `"Boxing Tracker"` → `Sessions` tab  
+- `INTERVIEW_NOTES.md` (added Endurance dimension section)  
+
+**Status**: COMPLETED
+
+---
+
 ## [v0.1] - 2025-12-11
 
 ### 2025-12-11 - 19:30 IST
